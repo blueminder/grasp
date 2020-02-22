@@ -15,6 +15,7 @@
   imgs.forEach(function(img) {
     var img_link = {};
     img_link["src"] = img.src;
+    // windows file paths do not support colons, changing to dots
     img_link["dest"] =
       "/capture_img/" +
       date.toISOString().replace(":", ".") +
@@ -24,6 +25,13 @@
     var newEl = document.createElement("span");
     newEl.innerText = "[[file:." + img_link["dest"] + "]]";
     img.parentNode.replaceChild(newEl, img);
+  });
+
+  var hrs = div.querySelectorAll("hr");
+  hrs.forEach(function(hr) {
+    var newEl = document.createElement("span");
+    newEl.innerText = "-----";
+    hr.parentNode.replaceChild(newEl, hr);
   });
 
   var bolds = div.querySelectorAll("b");
