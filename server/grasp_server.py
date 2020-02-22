@@ -7,6 +7,7 @@ import logging
 from pathlib import Path
 import re
 from typing import List, Optional
+import requests
 
 from org_tools import as_org, empty, DEFAULT_TEMPLATE
 
@@ -38,6 +39,7 @@ def capture(
         selection,
         comment,
         tag_str,
+        img_links,
 ):
     logger = get_logger()
     # protect strings against None
@@ -55,6 +57,13 @@ def capture(
     selection = safe(selection)
     comment = safe(comment)
     tag_str = safe(tag_str)
+    img_links = safe(img_links)
+
+    for img_link in img_links.values():
+        img_file = requests.get(img_link['src'])
+        img_dest_path = str(Path(os.environ[CAPTURE_PATH_VAR]).parent) + img_link['dest']
+        os.makedirs(os.path.dirname(img_dest_path), exist_ok=True)
+        open(img_dest_path, 'wb').write(img_file.content)
 
     tags: List[str] = []
     if not empty(tag_str):

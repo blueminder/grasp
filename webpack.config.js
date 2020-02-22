@@ -122,6 +122,7 @@ const options = {
     new CopyWebpackPlugin([
         { from: 'src/img/*.png', flatten: true },
         { from: 'src/*.html'   , flatten: true },
+        { from: 'src/js/capture_web.js', flatten: true },
     ]),
     new WebpackExtensionManifestPlugin({
         config: {
