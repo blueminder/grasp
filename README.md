@@ -1,75 +1,43 @@
-Build status: [![CircleCI](https://circleci.com/gh/karlicoss/grasp.svg?style=svg)](https://circleci.com/gh/karlicoss/grasp)
+# A Grasp fork
+**Enhanced web snippets for org-mode notes**
 
-Grasp is a browser extension for [Chrome](https://chrome.google.com/webstore/detail/org-grasp/ohhbcfjmnbmgkajljopdjcaokbpgbgfa) and [Firefox](https://addons.mozilla.org/en-US/firefox/addon/grasp), which adds a button/keybinding to capture current page title and url,
-possibly selected text, additional comments or tags and adds it into your [Org Mode](https://orgmode.org/) file.
+This is a fork of Dmitrii Gerasimov's [Grasp](https://github.com/karlicoss/grasp), a browser extension for Chrome and Firefox which adds a button/keybinding to capture snippets and details from web pages including:
+ * Current page title and url
+ * Selected text
+ * Additional comments
+ * Tags
 
+—and adding it into an [Org Mode](https://orgmode.org/) file of your choice.
+
+After trying every note-taking/bookmark snippet platform around and being disappointed with having every company take my notes hostage, I decided to adopt org-mode so that I can take notes on my own terms.
+
+I ran into Grasp on [Twitter](https://twitter.com/karlicoss/status/1226193108817367049) and decided to fiddle around with it after I realized it suited my needs for capturing snippets without having Emacs painstakingly configured across multiple environments. There's a flexibility inherent to plain text files has no compare.
+
+New features added to this version include:
+* [Rich text](https://orgmode.org/manual/Markup-for-Rich-Contents.html) Capturing
+* Image retrieval & [inline image links](https://orgmode.org/manual/Images.html#Images)
+* OCR support for captured images, to aid in full-text search of notes
+
+The following is a demo of the original tool sans new features:
 [Screenshot](https://user-images.githubusercontent.com/291333/51799721-a984eb80-221c-11e9-9612-8eb7f553dc01.png), [short demo](https://www.youtube.com/watch?v=Z8Bk-IazdGo).
 
-- [Chrome](https://chrome.google.com/webstore/detail/org-grasp/ohhbcfjmnbmgkajljopdjcaokbpgbgfa)
-- [Firefox](https://addons.mozilla.org/en-US/firefox/addon/grasp)
-- or, install from a zip: [releases](https://github.com/karlicoss/grasp/releases).
+For more information, check out the [official repository](https://github.com/karlicoss/grasp). The official README has a comparison between org-capture utilities, details on testing, and publishing to the extension web stores if that's what you're into. Modified sections are kept here to note fork differences and to get things running quickly from a dev environment.
 
 # Running
-In the simplest setup, the server runs locally, and you can use 'localhost' version of the extension. If you have to work on a computer where you can't run python scripts,
-or your target capture file is just not there, you can selfhost the server part elsewhere and use the 'any host' version. Don't forget to set the endpoint in extension settings!
+In the simplest setup, the server runs locally, and you can use 'localhost' version of the extension. If you have to work on a computer where you can't run python scripts, or your target capture file is just not there, you can selfhost the server part elsewhere and use the 'any host' version. Don't forget to set the endpoint in extension settings!
 
-1. Install server counterpart as systemd service (to autostart it): `server/setup --path /path/to/your/capture.org [--port <custom port>] [--template <custom org-capture template>]`.
+1. Install python server dependencies by running `pip3 install -r requirements.txt` in the `server` directory
+2. Install the server as a systemd service (to autostart it): `server/setup --path /path/to/your/capture.org [--port <custom port>] [--template <custom org-capture template>]`.
 
     Or alternatively, just run it directly if you don't want to autostart it: `server/grasp_server.py --path /path/to/your/capture.org [--port <custom_port>] [--template <custom org-capture template>]`.
-2. Install chrome extension and configure hotkeys
+3. Install browser extension and configure hotkeys
 
-That's it! If you're using custom port make sure it's the same as in the extension settings (default is `12212`).
-
-# Motivation
-Why use org-capture? Well, it's hard to explain, maybe some other time... However, if you do know you want to use it instead of/alongside your browser bookmarks, by default
-you don't have much choice and have to copy everything manually. For an experienced enough org-mode user it's no less than a torture.
-
-This tool:
-
-- \+ shows a notification when capturing fails/succeeds, so you won't lose your notes
-- \+ doesn't require always running Emacs, simply appends an org-mode text entry to a file
-- \+ can capture things that org-protocol can't handle (e.g. extra comment or tags)
-- \+ can potentially use any plaintext format as a storage.
-- \+ can capture images to be displayed inline
-
-     E.g. you might be more of a Markdown or Todo.txt fan (let me know if you are interested in that!).
-- \- doesn't talk to Emacs, so can't benefit from Emacs capture templates
-
-     E.g. currently you can't point at a specific header in an org file, it would just append at the end.
-
-- \- requires running a small HTTP server
-
-     However, there are no dependencies apart from python3, so in many ways, it's even more portable than Emacs.
-
-Comparison with similar tools:
-
-## [org-capture-extension](https://github.com/sprig/org-capture-extension)
-
-- \- relies on [org-protocol](https://orgmode.org/worg/org-contrib/org-protocol.html) and MIME handler: flaky for many people and has no feedback whether capture failed or succeeded
-
-     Losing few days of captured stuff due to MIME handler mysteriously not working was the main motivator for me to develop grasp.
-
-- \- requires always running Emacs, which might not be the case for some people
-- \+ relies on org-protocol, so can potentially be better integrated with Emacs and your org-mode files
-
-## [org-protocol-capture-html](https://github.com/alphapapa/org-protocol-capture-html)
-
-Same pros/cons as `org-capture-extension` as it's relying on org-protocol.
-
-In addition:
-
-- \+ using a bookmarklet, hence browser-agnostic
-- \+ capable of on the fly HTML to org-mode markup conversion
+That's it! If you're using a custom port make sure it's the same as in the extension settings (default is `12212`).
 
 # Dependencies
 * `python3`
   * `requests`
   * `pytesseract`
-
-Python 3 dependencies may be installed by running `pip3 install -r requirements.txt` in the `server` directory.
-
-# Potential improvements
-* see [todos](./TODO.org)
 
 # Permissions used
 * `http://localhost/capture` for talking with the backend
@@ -81,37 +49,15 @@ Python 3 dependencies may be installed by running `pip3 install -r requirements.
 * `activeTab` for requesting page info
 
 # Building & developing
-The most up-to-date instructions should be in [CI config](./.circleci/config.yml).
-
 You need `npm` for building the extension.
 
     npm install
     ./build --target <browser> # e.g. ./build --target chrome or ./build --target firefox
 
-After that you can find the extension in `dist` directory and 'Load unpacked** if necessary. There is also Flow and Eslint set up.
-
-## testing and linting
-Check [CI config](./.circleci/config.yml) to figure out all the checks I'm doing.
-
-The only test(s) that don't run on CI at the moment (e.g. due to lack of X server) are marked with `@skip_if_ci`. You can run them manually though.
-
-Extra tests (not integrated in CI yet):
-
-- `scripts/test_with_browser.py`
-
-## publishing
-
-- run `./publish` to generate extension zip files
-
-- firefox: `./build --firefox --release --lint --sign`
-
-  After than, upload the signed `xpi` file on [AMO](https://addons.mozilla.org/en-GB/developers/addon/grasp/versions)
-
-- chrome:  `./build --chrome  --release --lint`
-
-  After that, upload the zip (generated by publish script) on [Web store](https://chrome.google.com/webstore/developer/dashboard)
+After that you can find the extension in `dist` directory and **Load unpacked** if necessary. There is also Flow and Eslint set up.
 
 # Credits
-* Icon made by <a href="https://www.freepik.com/" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" 			    title="Flaticon">www.flaticon.com</a>, licensed by <a href="http://creativecommons.org/licenses/by/3.0/" 			    title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>
+* [Dmitrii Gerasimov](https://github.com/karlicoss) for writing grasp and giving me a springboard for implementing a wish list of features I've been wanting to see in snippet managers
+* Icon made by [Freepik](https://www.freepik.com/) from [Flaticon](https://www.flaticon.com/) licensed by [CC 3.0 BY](http://creativecommons.org/licenses/by/3.0/)
 * [Original Org Capture extension](https://github.com/sprig/org-capture-extension)
 * [Boilerplate for Webpack Chrome extension](https://github.com/samuelsimoes/chrome-extension-webpack-boilerplate)
