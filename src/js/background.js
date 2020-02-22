@@ -10,6 +10,7 @@ type Params = {
     selection: ?string,
     comment: ?string,
     tag_str: ?string,
+    img_links: ?string,
 }
 
 
@@ -85,20 +86,22 @@ function capture(comment: ?string = null, tag_str: ?string = null) {
         }
         const url: string = tab.url;
         const title: ?string = tab.title;
+        const img_links = null;
 
         get_options(opts => {
             // console.log('action!');
             // ugh.. https://stackoverflow.com/a/19165930/706389
             chrome.tabs.executeScript( {
-                code: "window.getSelection().toString();"
+                file: "/capture_web.js",
             }, selections => {
                 const selection = selections == null ? null : selections[0];
                 makeCaptureRequest({
                     url: url,
                     title: title,
-                    selection: selection,
+                    selection: selection[0],
                     comment: comment,
                     tag_str: tag_str,
+                    img_links: selection[1],
                 }, opts);
             });
         });

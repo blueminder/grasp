@@ -134,6 +134,9 @@ var options = {
     new CopyWebpackPlugin([
         { from: 'src/img/*.png', flatten: true },
     ]),
+    new CopyWebpackPlugin([
+        { from: 'src/js/capture_web.js', flatten: true },
+    ]),
     // expose and write the allowed env vars on the compiled bundle
     new webpack.DefinePlugin({
       "process.env.NODE_ENV": JSON.stringify(env.NODE_ENV)
