@@ -12,7 +12,7 @@
     imgs.forEach(function(img) {
 	var img_link = {}
 	img_link["src"] = img.src
-	img_link["dest"] = "/capture_img/" + date.toISOString() + "/" + img.src.split("/").pop()
+	img_link["dest"] = "/capture_img/" + date.toISOString().replace(':','.') + "/" + img.src.split("/").pop()
 	img_links.push(img_link)
 	var newEl = document.createElement('span')
 	newEl.innerText = "[[file:." + img_link["dest"] + "]]"
@@ -62,7 +62,7 @@
     });
     
     var output = div.innerText;
-    img_links_obj = Object.assign({}, img_links)
+    var img_links_obj = Object.assign({}, img_links)
 
     return [output, img_links_obj];
 })();

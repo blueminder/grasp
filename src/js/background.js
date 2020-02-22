@@ -86,7 +86,6 @@ function capture(comment: ?string = null, tag_str: ?string = null) {
         }
         const url: string = tab.url;
         const title: ?string = tab.title;
-        const img_links = null;
 
         get_options(opts => {
             // console.log('action!');
