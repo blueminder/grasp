@@ -64,6 +64,8 @@ In addition:
 # Dependencies
 * `python3`
   * `requests`
+  * `pytesseract`
+
 Python 3 dependencies may be installed by running `pip3 install -r requirements.txt` in the `server` directory.
 
 # Potential improvements

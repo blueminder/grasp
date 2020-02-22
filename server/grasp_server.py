@@ -9,6 +9,12 @@ import re
 from typing import List, Optional
 import requests
 
+try:
+    from PIL import Image
+except ImportError:
+    import Image
+import pytesseract
+
 from org_tools import as_org, empty, DEFAULT_TEMPLATE
 
 CAPTURE_PATH_VAR = 'GRASP_CAPTURE_PATH'
@@ -64,6 +70,13 @@ def capture(
         img_dest_path = str(Path(os.environ[CAPTURE_PATH_VAR]).parent) + img_link['dest']
         os.makedirs(os.path.dirname(img_dest_path), exist_ok=True)
         open(img_dest_path, 'wb').write(img_file.content)
+
+        ocr_text = pytesseract.image_to_string(img_dest_path)
+        if ocr_text.strip():
+            dest_link = "[[file:." + img_link["dest"] + "]]"
+            ocr_drawer = ":OCRTEXT:\n" + ocr_text + "\n:END:"
+            link_drawer = dest_link + "\n" + ocr_drawer
+            selection = selection.replace(dest_link, link_drawer)
 
     tags: List[str] = []
     if not empty(tag_str):
