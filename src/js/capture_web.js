@@ -18,7 +18,7 @@
     // windows file paths do not support colons, changing to dots
     img_link["dest"] =
       "/capture_img/" +
-      date.toISOString().replace(":", ".") +
+      date.toISOString().replace(/:/g, ".") +
       "/" +
       img.src.split("/").pop();
     img_links.push(img_link);
