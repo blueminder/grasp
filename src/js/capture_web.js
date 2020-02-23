@@ -22,14 +22,14 @@
       "/" +
       img.src.split("/").pop();
     img_links.push(img_link);
-    var newEl = document.createElement("span");
+    var newEl = document.createElement("div");
     newEl.innerText = "[[file:." + img_link["dest"] + "]]";
     img.parentNode.replaceChild(newEl, img);
   });
 
   var hrs = div.querySelectorAll("hr");
   hrs.forEach(function(hr) {
-    var newEl = document.createElement("span");
+    var newEl = document.createElement("div");
     newEl.innerText = "-----";
     hr.parentNode.replaceChild(newEl, hr);
   });

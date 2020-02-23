@@ -74,7 +74,7 @@ def capture(
         ocr_text = pytesseract.image_to_string(img_dest_path)
         if ocr_text.strip():
             dest_link = "[[file:." + img_link["dest"] + "]]"
-            ocr_drawer = ":OCRTEXT:\n" + ocr_text + "\n:END:"
+            ocr_drawer = ":OCRTEXT:\n" + ocr_text + "\n:END:\n"
             link_drawer = dest_link + "\n" + ocr_drawer
             selection = selection.replace(dest_link, link_drawer)
 
